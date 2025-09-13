@@ -53,6 +53,7 @@ function MainPage(){
      <select>
       <option>18</option>
       <option>19</option>
+      <option>20</option>
      </select>
     </div>
     <div className = "region">

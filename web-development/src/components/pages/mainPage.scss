@@ -1,0 +1,357 @@
+
+body {
+  display: flex;
+  justify-content: center;
+  background: #f8f8f8;
+}
+
+.main-container-one {
+  background-color: white;
+  width: 100%;          
+  max-width: 1400px;   
+  min-height: 100vh;  
+  border: 2px solid rgb(225, 225, 225);
+  box-shadow: 1px 1px 14px 1px rgb(225, 225, 225);
+  margin: 20px auto;  
+  padding: 20px; 
+
+ .header-main{
+  display: flex;
+  flex-direction: column;
+
+  .top{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 0;
+
+  .name-site{
+   color: orangered;
+   font-size: 40px;
+   margin-left: 107px;
+   font-weight: bold;
+  }
+
+  .button-one{
+   background-color: transparent;
+   color: rgb(100, 100, 100);
+   border: 1px solid rgb(168, 168, 168);
+   border-radius: 2px;
+   padding: 10px 15px 10px 5px
+  }
+
+  .button-one:hover{
+   background-color: rgb(168, 168, 168, 0.1);
+
+  }
+  
+  .button-two{
+   background-color: transparent;
+   color: rgb(255, 100, 43);
+   border: 1px solid rgb(255, 176, 148);
+   border-radius: 2px;
+   padding: 10px 15px 10px 15px;
+   margin: 0px 90px 0px 20px;
+  }
+  .button-two:hover{
+   background-color: rgb(246, 130, 88, 0.1);
+  }
+  
+ }
+ .bottom{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+   .left-two{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-left: 105.5px;
+  button{
+   color: rgb(246, 130, 88);
+   border: none;
+   background-color: transparent;
+   font-size: 20px;
+   font-weight: bold;
+   margin-right: 20px;
+   transition:all 0.2s ease-in-out;
+  }
+  button:hover{
+   border-bottom: 1px solid rgb(246, 130, 88);
+  }
+  button:active{
+   color:lightsalmon;
+  }
+ }
+ .add-teachers{
+  color: rgb(246, 130, 88);
+  border: 1px solid rgb(246, 130, 88);
+  background-color: transparent;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 10px 15px 10px;
+  margin-right: 90px;
+ }
+ .add-teachers:hover{
+  background-color: rgb(246, 130, 88, 0.1);
+ }
+ }
+}
+
+.top-teachers{
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ width: 20vw;
+ border-top: 1px solid grey;
+ margin: 30px 0px 0px 260px;
+ p{
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 30px;
+  color: black;
+  
+ }
+}
+
+.search{
+ display: flex;
+ flex-direction: row;
+ font-family: Arial, Helvetica, sans-serif;
+ color: rgb(168, 168, 168);
+ margin-left: 99.5px;
+ height: 32px;
+ .region, .sex, .with-photo, .only-favorites {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-left: 1px dashed rgb(168, 168, 168);
+ }
+ .age{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+ }
+ p{
+  margin: 0px 15px 0px 15px;
+ }
+ .with, .only{
+  margin: 0px 30px 0px 5px;
+ }
+ input{
+  margin-left: 20px;
+ }
+ select{
+  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(102, 102, 102);
+  border: 1px solid rgb(168, 168, 168);
+  padding: 8px 6px 8px 6px;
+  margin-right: 20px;
+}
+}
+
+.info-grid, .favorite-grid{
+ display: grid;
+ grid-template-columns: 160px 160px 160px 160px 160px;
+ gap: 10px 22px;
+ font-family: Arial, Helvetica, sans-serif;
+ margin-top: 60px;
+ margin-left: 80px;
+ .img{
+  font-size: 20px;
+  font-weight: bold;
+  width: 130px;
+  height: 130px;
+  background-color: transparent;
+  color: orangered;
+  border: 2px solid orangered;
+  border-radius: 65px;
+  margin-bottom: 17px;
+ }
+ .grid{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  line-height: 28px;
+  position: relative;
+  p{
+   margin: 0px;
+
+  }
+ }
+ .name, .surname{
+  font-size: 17px;
+  font-weight: bold;
+ }
+ .country{
+  font-size: 12px;
+  color: rgb(61, 61, 61);
+ }
+ .disciplin{
+  font-size: 15px;
+  color: rgb(102, 102, 102);
+ }
+ .star{
+  color: gold;
+  font-size: 40px;
+  position: absolute;
+  top: 0px;
+  right: 21px;
+ }
+}
+
+.line{
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ width: 20vw;
+ border-top: 1px solid grey;
+ margin: 30px 0px 0px 260px;
+ p{
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 30px;
+  color: black;
+  
+ }
+}
+
+.table{
+
+ table{
+  width: 100%;           
+  max-width: 900px;     
+  margin: 20px auto;    
+  border-collapse: collapse;
+  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(102, 102, 102);
+}
+
+thead tr:first-child th {
+  border-bottom: 1px solid rgb(102, 102, 102);
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+  
+}
+
+ tr:nth-child(even) {
+      background-color: rgba(250, 222, 244, 0.3); 
+    }
+
+    tr:nth-child(odd) {
+      background-color: #ffffff; 
+    }
+ .two{
+  margin-left: 80px;
+  button{
+   background-color: transparent;
+   color: rgb(79, 197, 215);
+   border: none;
+   margin-top: 20px;
+  }
+ }
+ .first, .dot{
+  color: black !important;
+ }
+}
+
+.line-two{
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ width: 20vw;
+ border-top: 1px solid grey;
+ margin: 30px 0px 0px 260px;
+ p{
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 30px;
+  color: black;
+  
+ }
+}
+
+.favorite-grid{
+ margin-left: 85px !important;
+ margin-top: 20px !important
+ 
+}
+.one-button{
+  position: relative;
+  top: 680px;
+  left: 33px;
+  background-color: transparent;
+  border: none;
+  scale: 5;
+}
+.two-button{
+  position: relative;
+  top: 680px;
+  right: -980px;
+  background-color: transparent;
+  border: none;
+  scale: 5;
+}
+.line-three{
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ width: 20vw;
+ border-top: 1px solid grey;
+ margin: 55px 0px 0px 260px;
+}
+.info-text {
+  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(102, 102, 102);
+  width: 90%;            
+  max-width: 1000px;      
+  margin: 50px auto 0;  
+  line-height: 1.5;
+}
+.footer{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 30px;
+   .left-two{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-left: 63.5px;
+  button{
+   color: rgb(246, 130, 88);
+   border: none;
+   background-color: transparent;
+   font-size: 20px;
+   font-weight: bold;
+   margin-right: 20px;
+  }
+  button:hover{
+   border-bottom: 1px solid rgb(246, 130, 88);
+  }
+  button:active{
+   color:lightsalmon;
+  }
+ }
+ .add-teachers{
+  color: rgb(246, 130, 88);
+  border: 1px solid rgb(246, 130, 88);
+  background-color: transparent;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 10px 15px 10px;
+  margin-right: 90px;
+ }
+ .add-teachers:hover{
+  background-color: rgb(246, 130, 88, 0.1);
+ }
+}
+}
+

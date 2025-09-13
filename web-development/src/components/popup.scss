@@ -1,0 +1,206 @@
+.Main-Container{
+ color: black;
+ background-color: white;
+ width: 430px;
+ height: 725px;
+ position: relative;
+}
+
+.header{
+ display: flex;
+ flex-direction: row;
+ justify-content: space-between;
+ align-items: center;
+ font-family: Arial, Helvetica, sans-serif;
+ color: white;
+ font-weight: bold;
+ font-size: 20px;
+ position: absolute;
+ top: 0;
+ left: 0;
+ height: 50px;
+ width: 100%;
+ background-color: rgb(60, 60, 60);
+}
+.add-teacher{
+ margin: 0;
+ margin-left: 15px;
+}
+
+.close-button{
+ background-color: transparent;
+ border:none;
+ color: white;
+ font-size: 20px;
+ margin-right: 15px;
+}
+
+.top{
+ display: flex;
+ flex-direction: column;
+ text-align: center;
+ align-items: center;
+ justify-content: flex-start;
+ font-family: Arial, Helvetica, sans-serif;
+ padding-top: 77px;
+ width: 100%;
+
+}
+
+.text-name{
+ display: inline;
+ margin: 0;
+ margin-right: 347.5px;
+ margin-bottom: 5px;
+ color: rgb(125, 124, 124);
+}
+
+.speciality-text{
+ margin: 17px 321px 5px 0px;
+  color: rgb(125, 124, 124);
+}
+.name-field{
+ width: 373px;
+ height: 23px;
+ font-family: Arial, Helvetica, sans-serif;
+ border: 1px solid rgb(133, 133, 133);
+ border-radius: 3px;
+ padding-left: 13px;
+ color: rgb(125, 124, 124);
+ }
+
+ .speciality{
+ width: 391px;
+ height: 28px;
+ font-family: Arial, Helvetica, sans-serif;
+ border: 1px solid rgb(133, 133, 133);
+ border-radius: 3px;
+ padding-left: 10px;
+   color: rgb(125, 124, 124);
+
+ }
+
+ .middle{
+  display: flex;
+  flex-direction: row;
+  font-family: Arial, Helvetica, sans-serif;
+  gap: 21px;
+  padding-left: 20px;
+  padding-bottom: 17px;
+  color: rgb(125, 124, 124);
+ }
+
+ .right{
+  display: flex;
+  flex-direction: column;
+ }
+
+ .left{
+  display: flex;
+  flex-direction: column;
+ }
+
+ .text{
+ display: inline;
+ margin: 17px 0px 5px 0px;
+}
+
+.middle-input{
+ height: 23px;
+ border: 1px solid rgb(133, 133, 133);
+ border-radius: 3px;
+ padding-left: 10px;
+ color: rgb(125, 124, 124);
+}
+
+.select-country{
+  height: 26.5px;
+ border: 1px solid rgb(133, 133, 133);
+ border-radius: 3px;
+ padding-left: 10px;
+ color: rgb(125, 124, 124);
+}
+
+.date-input{
+  height: 23px;
+ border: 1px solid rgb(133, 133, 133);
+ border-radius: 3px;
+ padding-left: 10px;
+ color: rgb(125, 124, 124);
+}
+
+.genders{
+ margin-top: 17px;
+}
+
+.text-sex{
+ display: inline;
+ margin-right: 30px;
+}
+
+.change-color{
+ display: flex;
+ flex-direction: row;
+ justify-content: space-between;
+ align-items: center;
+ text-align: center;
+ margin-top: 17px; 
+}
+
+.color-input{
+ height: 20px;
+ width: 38px;
+ border: 1px solid rgb(133, 133, 133);
+ border-radius: 3px;
+ color: rgb(125, 124, 124);
+}
+
+.text-back{
+ display: inline;
+ margin: 0;
+}
+
+.bottom{
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ width: 100%;
+}
+
+.comments{
+ width: 385px;
+ height: 100px;
+ border: 1px solid rgb(133, 133, 133);
+ border-radius: 3px;
+ color: rgb(125, 124, 124);
+}
+
+.text-notes{
+ font-family: Arial, Helvetica, sans-serif;
+ display: inline;
+ margin: 0;
+ margin-right: 277.3px;
+ margin-bottom: 5px;
+ color: rgb(125, 124, 124);
+}
+
+.add-button{
+display: flex;
+justify-content: center;
+align-items: center;
+margin-top: 35px;
+height: 50px;
+}
+
+.add{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 390px;
+  height: 50px;
+  border: 1px solid orangered;
+  color: orangered;
+  font-size: 20px;
+  font-weight: bold;
+  background-color: transparent;
+}

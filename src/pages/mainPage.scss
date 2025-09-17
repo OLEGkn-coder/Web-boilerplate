@@ -48,11 +48,14 @@ body {
       }
 
       .button-one {
+        width: 300px;
         color: #646464;
         border: 1px solid #a8a8a8;
 
         &:hover {
+          color: black;
           background-color: rgba(168, 168, 168, 0.1);
+          border-color: black;
         }
       }
 
@@ -62,7 +65,8 @@ body {
         margin: 0 90px 0 20px;
 
         &:hover {
-          background-color: rgba(246, 130, 88, 0.1);
+          color: white;
+          background-color: #ff642b;
         }
       }
     }
@@ -87,9 +91,11 @@ body {
           font-weight: bold;
           margin-right: 20px;
           transition: all 0.2s ease-in-out;
+          border-bottom: 2px solid transparent;
           cursor: pointer;
 
           &:hover {
+            color: #ca603a;
             border-bottom: 2px solid #f68258;
           }
 
@@ -111,7 +117,8 @@ body {
         cursor: pointer;
 
         &:hover {
-          background-color: rgba(246, 130, 88, 0.1);
+          color: white;
+          background-color: #f68258;
         }
       }
     }
@@ -124,8 +131,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 20vw;
-    border-top: 1px solid #b0b0b0;
+    width: 450px;
+    border-top: 3px solid #b0b0b0;
     margin: 30px auto 0;
 
     p {
@@ -156,6 +163,7 @@ body {
       gap: 5px;
     }
 
+   
     input,
     select {
       margin-left: 10px;
@@ -206,9 +214,25 @@ body {
       align-items: center;
       line-height: 28px;
       position: relative;
+       
+      .name, .surname{
+      color: black;
+      font-weight: bold;
+      font-size: 19px;
+      }
+
+      .disciplin{
+        margin-top: 6px
+      }
+
+      .country{
+        color: black;
+        font-size: 12px;
+      }
 
       p {
         margin: 0px;
+        
       }
     }
 
@@ -230,8 +254,16 @@ body {
       color: #666666;
     }
 
+    th{
+      transition: all 0.3s;
+    }
+    th:hover{
+      background-color: rgb(224, 224, 224, 0.3);
+      border-bottom: 5px solid black !important;
+    }
+
     thead tr:first-child th {
-      border-bottom: 1px solid #666666;
+      border-bottom: 2px solid #666666;
     }
 
     th,
@@ -273,26 +305,33 @@ body {
 
   .one-button,
   .two-button {
-    position: relative;
+    color: rgb(185, 185, 185);
     background-color: transparent;
     border: none;
-    transform: scale(2.5);
+    padding-bottom: 3px !important;
+    transform: scale(5);
     cursor: pointer;
     transition: transform 0.3s ease;
 
     &:hover {
-      transform: scale(2.7);
+      transform: scale(4);
     }
   }
 
-  .one-button {
-    top: 680px;
-    left: 33px;
+  .one-button{
+    padding: 0;
+    padding-left: 10px;
   }
+  .two-button{
+    padding: 0;
+    padding-right: 10px;
+  }
+  .button{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 
-  .two-button {
-    top: 680px;
-    right: -980px;
   }
 
   .info-text {
@@ -323,9 +362,11 @@ body {
         font-size: 20px;
         font-weight: bold;
         margin-right: 20px;
+        border-bottom: 2px solid transparent;
         cursor: pointer;
 
         &:hover {
+          color: #ca603a;
           border-bottom: 2px solid #f68258;
         }
 
@@ -346,31 +387,89 @@ body {
       transition: all 0.3s ease;
 
       &:hover {
-        background-color: rgba(246, 130, 88, 0.1);
+        background-color: #f68258;
+        color: white
       }
     }
   }
 }
 
-@media (max-width: 1200px) {
+@media (min-width: 1024px) and (max-width: 1200px) {
   .main-container-one {
     padding: 15px;
   }
+    .top-teachers,
+  .line,
+  .line-two,
+  .line-three {
+    border-width: 3px !important;
+    width: 450px !important;
+  }
+
 }
 
-@media (max-width: 1024px) {
-  .main-container-one .header-main .top .name-site {
-    margin-left: 20px;
-    font-size: 32px;
+
+@media(min-width: 768px) and (max-width: 1024px){
+  .main-container-one .header-main .top,
+  .main-container-one .header-main .bottom {
+    flex-direction: column;
+    align-items: center;
   }
 
-  .search {
-    margin-left: 20px;
+  .top-teachers,
+  .line,
+  .line-two,
+  .line-three {
+    border-width: 3px !important;
+    width: 450px !important;
   }
 
-  .info-grid,
-  .favorite-grid {
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  .one-button{
+    padding-right: 3px !important;
+  }
+  .two-button{
+    padding-left: 3px !important;
+  }
+
+  .left-two{
+    width: 100% !important;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0 !important;
+  }
+
+  .right-one{
+    display: flex !important;
+    flex-direction: row;
+    justify-content: space-between !important;
+    width: 100%;
+  }
+
+  .button-two{
+    margin-right: 10px !important;
+  }
+
+  .right-two{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .add-teachers{
+     margin: 0 !important;
+  }
+
+  .button-two{
+    margin-right: 24.5px !important;
+  }
+ .left-one{
+    margin-bottom: 30px;
+  }
+  .name-site{
+    margin: 0 !important;
   }
 }
 
@@ -381,17 +480,64 @@ body {
     align-items: center;
   }
 
-  .search {
-    flex-direction: column;
-    margin-left: 0;
-    align-items: flex-start;
-  }
-
   .top-teachers,
   .line,
   .line-two,
   .line-three {
-    width: 60%;
+    border-width: 3px !important;
+    width: 300px !important;
   }
+
+  .one-button{
+    padding-right: 3px !important;
+  }
+  .two-button{
+    padding-left: 3px !important;
+  }
+.search{
+  margin: 0 !important;
+}
+  .left-two{
+    width: 100% !important;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0 !important;
+  }
+
+  .right-one{
+    display: flex !important;
+    flex-direction: row;
+    justify-content: space-between !important;
+    width: 100%;
+  }
+
+  .button-two{
+    margin-right: 10px !important;
+  }
+
+  .right-two{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .add-teachers{
+     margin: 0 !important;
+  }
+
+  .button-two{
+    margin-right: 24.5px !important;
+  }
+
+  .left-one{
+    margin-bottom: 30px;
+  }
+  .name-site{
+    margin: 0 !important;
+  }
+  
 }
 

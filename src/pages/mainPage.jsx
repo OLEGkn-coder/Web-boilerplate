@@ -40,6 +40,13 @@ function MainPage() {
       </div>
     ));
 
+    const renderFavoriteGrid = (list) =>
+      list.map((t, index) => (
+       <div className = "grid" key = {index}>
+        <button className = "img">{t.initials}</button>
+       </div>
+      ));
+
   const renderTableRows = () =>
     statistics.map((s, idx) => (
       <tr key={idx}>
@@ -75,13 +82,46 @@ function MainPage() {
         </div>
       </header>
 
-      <div className="top-teachers"><p>Top Teachers</p></div>
-      <div className="info-grid">{renderTeacherGrid(topTeachers)}</div>
+      <div className="top-teachers">
+        <p>Top Teachers</p>
+        </div>
+        <div className = "search">
+    <div className = "age">
+     <p>Age</p>
+     <select>
+      <option>18</option>
+      <option>19</option>
+     </select>
+    </div>
+    <div className = "region">
+     <p>Region</p>
+     <select>
+      <option>Kyiv</option>
+      <option>Lviv</option>
+     </select>
+    </div>
+    <div className = "sex">
+     <p>Sex</p>
+     <select>
+      <option>Male</option>
+      <option>Female</option>
+     </select>
+    </div>
+    <div className = "with-photo">
+     <input type = "checkbox"></input>
+     <p className = "with">Only with photo</p>
+    </div>
+    <div className = "only-favorites">
+     <input type = "checkbox"></input>
+     <p className = "only">Only favorites</p>
+    </div>
+   </div>
+      <div className="info-grid">
+        {renderTeacherGrid(topTeachers)}
+        </div>
 
       <div className="line"><p>Statistics</p></div>
       <div className="table">
-        <button className="one-button">&#x2B9C;</button>
-        <button className="two-button">&#x2B9E;</button>
         <table>
           <thead>
             <tr>
@@ -103,8 +143,16 @@ function MainPage() {
         </div>
       </div>
 
-      <div className="line-two"><p>Favorites</p></div>
-      <div className="favorite-grid">{renderTeacherGrid(favoriteTeachers)}</div>
+      <div className="line-two">
+        <p>Favorites</p>
+      </div>
+      <div className = "button">
+        <button className="one-button">&#x2B9C;</button>
+      <div className="favorite-grid">
+        {renderFavoriteGrid(favoriteTeachers)}
+      </div>
+       <button className="two-button">&#x2B9E;</button>
+      </div>
 
       <div className="line-three"></div>
       <div className="info-text">

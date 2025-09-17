@@ -44,11 +44,46 @@ const all = [...rightRandomUser, ...rightAdditionalUser].filter(
   (user, index, self) => index === self.findIndex((t) => t.email === user.email)
 );
 
-const validate = all.map(
-  (user) =>
-    typeof user.full_name === "string" &&
-    user.full_name[0] === user.full_name[0].toUpperCase()
-);
-console.log(all);
+const fields = ["full_name", "gender", "note", "state", "city", "country"];
 
+const validate = (user) => {
+  const textValide = fields.every(
+    (field) =>
+      typeof user[field] === "string" &&
+      user[field][0] === user[field][0].toUpperCase()
+  );
+
+  const ageValide = typeof user.age === "number";
+
+  const emailValide =
+    typeof user.email === "string" && user.email.includes("@");
+
+  const phoneValide = typeof user.phone === "string";
+
+  return textValide && ageValide && emailValide && phoneValide;
+};
+
+const filterUser = (users, filtrParam) => {
+  return users.filter((user) =>
+    Object.entries(filtrParam).every(([key, value]) => {
+      return user[key] === value;
+    })
+  );
+};
+
+const sortData = (user, field, sort) => {
+  if (typeof user === "string") {
+    user.sort((a, b) => a.field.localeCompare(b.field));
+  }
+};
+
+const searchData = (users, key, value) => {
+  return users.find((user) => user[key] === value) || "Not found";
+};
+
+const percentAll = (users, cond) => {
+  const filtreAll = users.filter(cond);
+  const percent = (filtreAll.length / users.length) * 100;
+  return percent;
+};
 export { all };

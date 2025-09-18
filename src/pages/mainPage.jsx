@@ -1,5 +1,8 @@
 import React from "react";
 import "./mainPage.scss";
+import {rightRandomUser ,rightAdditionalUser ,all, validate, filterUser, sortData, searchData, percentAll} from "../scripts/utils";
+import { randomUserMock } from "../scripts/Lab2-mock";
+
 const teachers = [
   { initials: "I.T", name: "Ihor", surname: "Tkachuk", discipline: "Chemistry", country: "Ukraine", favorite: false },
   { initials: "P.R", name: "Pragg", surname: "Rameshbau", discipline: "Chess", country: "India", favorite: true },
@@ -25,8 +28,16 @@ const statistics = [
 ];
 
 function MainPage() {
+  console.log("1", searchData(teachers, "name", "Ihor"))
+  console.log("2 ",percentAll(statistics, (s) => s.gender === "Female") + "%");
+  console.log("3" ,filterUser(statistics, {age: 32}));
+  console.log("4", rightRandomUser);
+  console.log("5" , rightAdditionalUser);
+  console.log("6" , all);
+  console.log("7" , validate( randomUserMock));
   const topTeachers = teachers;
   const favoriteTeachers = teachers.filter((t) => t.favorite);
+
 
   const renderTeacherGrid = (list) =>
     list.map((t, index) => (

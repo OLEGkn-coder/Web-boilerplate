@@ -1,5 +1,6 @@
 import { randomUserMock } from "./Lab2-mock";
 import { additionalUsers } from "./Lab2-mock";
+
 const course = [
   "Mathematics",
   "Physics",
@@ -86,4 +87,13 @@ const percentAll = (users, cond) => {
   const percent = (filtreAll.length / users.length) * 100;
   return percent;
 };
-export { all };
+export {
+  rightRandomUser,
+  rightAdditionalUser,
+  all,
+  validate,
+  filterUser,
+  sortData,
+  searchData,
+  percentAll,
+};

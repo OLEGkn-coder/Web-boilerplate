@@ -2,30 +2,11 @@ import React from "react";
 import "./mainPage.scss";
 import {rightRandomUser ,rightAdditionalUser ,all, validate, filterUser, sortData, searchData, percentAll} from "../scripts/utils";
 import { randomUserMock } from "../scripts/Lab2-mock";
-
-const teachers = [
-  { initials: "I.T", name: "Ihor", surname: "Tkachuk", discipline: "Chemistry", country: "Ukraine", favorite: false },
-  { initials: "P.R", name: "Pragg", surname: "Rameshbau", discipline: "Chess", country: "India", favorite: true },
-  { initials: "F.J", name: "Floor", surname: "Jansenk", discipline: "Vocal", country: "Denmark", favorite: true},
-  { initials: "J.B", name: "John", surname: "Burke", discipline: "Computer Science", country: "Belgium", favorite: true },
-  { initials: "A.T", name: "Ari", surname: "Tang", discipline: "Biology", country: "China", favorite: true },
-  { initials: "R.A", name: "Rachel", surname: "Andrew", discipline: "Medicine", country: "UK", favorite: false },
-  { initials: "A.M", name: "Anna", surname: "Muzychuk", discipline: "Chess", country: "Iceland", favorite: false },
-  { initials: "R.L", name: "Radoslaw", surname: "Ljuboevic", discipline: "Physics", country: "Poland", favorite: true },
-];
-
-const statistics = [
-  { name: "Daisy Alexander", speciality: "Chemistry", age: 28, gender: "Female", nationality: "Vietnam" },
-  { name: "Julia Bradley", speciality: "Math", age: 26, gender: "Female", nationality: "USA" },
-  { name: "Rita Hart", speciality: "Art", age: 41, gender: "Female", nationality: "England" },
-  { name: "Jonathan Jacobs", speciality: "Math", age: 32, gender: "Male", nationality: "Austria" },
-  { name: "Natheniel White", speciality: "Computer Science", age: 37, gender: "Male", nationality: "Austria" },
-  { name: "Frank Medina", speciality: "English", age: 43, gender: "Male", nationality: "Italy" },
-  { name: "Ella Curtis", speciality: "Chess", age: 34, gender: "Female", nationality: "USA" },
-  { name: "Claire Simmmons", speciality: "Art", age: 38, gender: "Female", nationality: "Netherlands" },
-  { name: "Benjamin Knight", speciality: "Biology", age: 44, gender: "Male", nationality: "Scotland" },
-  { name: "Norma Rose", speciality: "Statistics", age: 36, gender: "Female", nationality: "France" },
-];
+import { useState } from "react";
+import PopUp2 from "../components/ShowTeach";
+import PopUp from "../components/AddTeach";
+import { teachers } from "../data/teachers";
+import { statistics } from "../data/statistics";
 
 function MainPage() {
   console.log("1", searchData(teachers, "name", "Ihor"))
@@ -35,19 +16,39 @@ function MainPage() {
   console.log("5" , rightAdditionalUser);
   console.log("6" , all);
   console.log("7" , validate( randomUserMock));
+
+
   const topTeachers = teachers;
   const favoriteTeachers = teachers.filter((t) => t.favorite);
 
+  const [ teachersList, setTeachersList ] = React.useState(teachers)
+  const [ selectedTeacher, setSelectedTeacher ] = React.useState(null);
+  const [ addPopUpOpen, setAddPopUpOpen ] = useState(false);
+  const toggleFavorite = (index) => {
+    const newTeachers = [...teachersList];
+    newTeachers[index].favorite = !newTeachers[index].favorite
+    setTeachersList(newTeachers);
+  }
+
+  const handleAddTeacher = (newTeachers) => {
+    const teacherWithId = {
+      ...newTeachers,
+      favorite: false,
+    };
+    setTeachersList([...teachersList, teacherWithId])
+  };
 
   const renderTeacherGrid = (list) =>
     list.map((t, index) => (
-      <div className="grid" key={index}>
+      <div className="grid" key={index} onClick={() => setSelectedTeacher(t)}>
         <button className="img">{t.initials}</button>
         <p className="name">{t.name}</p>
         <p className="surname">{t.surname}</p>
         <p className="disciplin">{t.discipline}</p>
         <p className="country">{t.country}</p>
-        {t.favorite && <div className="star">&#x2605;</div>}
+        <button className={`star ${t.favorite ? "favorite" : ""}`} onClick={(e) =>{e.stopPropagation(); toggleFavorite(index);}}>
+          &#x2605;
+        </button>
       </div>
     ));
 
@@ -70,6 +71,7 @@ function MainPage() {
     ));
 
   return (
+     <>
     <div className="main-container-one">
       <header className="header-main">
         <div className="top">
@@ -88,7 +90,9 @@ function MainPage() {
             ))}
           </div>
           <div className="right-two">
-            <button className="add-teachers">Add teacher</button>
+            <button className="add-teachers" onClick={() => setAddPopUpOpen(true)}>
+              Add teacher
+              </button>
           </div>
         </div>
       </header>
@@ -179,10 +183,14 @@ function MainPage() {
           ))}
         </div>
         <div className="right-two">
-          <button className="add-teachers">Add teacher</button>
+          <button className="add-teachers" onClick={() => setAddPopUpOpen(true)}>Add teacher</button>
         </div>
       </footer>
     </div>
+    <PopUp2 t={selectedTeacher} onClose={() => setSelectedTeacher(null)}/>
+    {addPopUpOpen && 
+    <PopUp onClose={() => setAddPopUpOpen(false)} AddTeacher={handleAddTeacher}/>}
+   </>
   );
 }
 

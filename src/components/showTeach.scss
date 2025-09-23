@@ -1,3 +1,13 @@
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
 .Main-container{
  display: flex;
  flex-direction: column;
@@ -5,7 +15,7 @@
  height: 562px;
  background-color: white;
  position: relative;
- 
+
 .header-popup{
  display: flex;
  flex-direction: row;
@@ -52,9 +62,10 @@ padding-left: 18px;
  .img{
   width: 340px;
   height: 340px;
-  background-color: orange;
- 
- }
+  background-color: transparent;
+  border: 5px solid orange;
+  font-size: 30px;
+  }
 }
 
 .middle{
@@ -91,11 +102,19 @@ padding-left: 18px;
    margin-left: 243px;
   .button-star{
   background-color: transparent;
-  color: gold;
+  color: grey;
   border: none;
   font-size: 50px;
   margin-bottom: 250px;
+  transition: all 0.2s ease;
    }
+   .button-star:hover{
+    transform: scale(1.5);
+   }
+   .button-star.favorite{
+    color: gold;
+   }
+
   }
 
 .info-div{

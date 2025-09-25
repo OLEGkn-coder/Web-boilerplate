@@ -10,6 +10,7 @@ export const teachers = [
     discipline: "Chemistry",
     country: "Ukraine",
     favorite: false,
+    photo: "/src/assets/Cat1.png",
   },
   {
     initials: "P.R",
@@ -22,6 +23,7 @@ export const teachers = [
     discipline: "Chess",
     country: "India",
     favorite: false,
+    photo: "",
   },
   {
     initials: "F.J",
@@ -34,6 +36,7 @@ export const teachers = [
     discipline: "Vocal",
     country: "Denmark",
     favorite: false,
+    photo: "/src/assets/Cat2.png",
   },
   {
     initials: "J.B",
@@ -46,6 +49,7 @@ export const teachers = [
     discipline: "Art",
     country: "Belgium",
     favorite: false,
+    photo: "",
   },
   {
     initials: "A.T",
@@ -58,6 +62,7 @@ export const teachers = [
     discipline: "Biology",
     country: "China",
     favorite: false,
+    photo: "/src/assets/Cat4.png",
   },
   {
     initials: "R.A",
@@ -70,6 +75,7 @@ export const teachers = [
     discipline: "Medicine",
     country: "UK",
     favorite: false,
+    photo: "",
   },
   {
     initials: "A.M",
@@ -82,6 +88,7 @@ export const teachers = [
     discipline: "Chess",
     country: "Iceland",
     favorite: false,
+    photo: "",
   },
   {
     initials: "R.L",
@@ -94,6 +101,7 @@ export const teachers = [
     discipline: "Physics",
     country: "Poland",
     favorite: false,
+    photo: "/src/assets/Cat3.png",
   },
   {
     initials: "J.B",
@@ -106,5 +114,6 @@ export const teachers = [
     discipline: "Computer Science",
     country: "Belgium",
     favorite: false,
+    photo: "",
   },
 ];

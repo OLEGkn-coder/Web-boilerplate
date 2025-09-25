@@ -1,6 +1,6 @@
-import { randomUserMock } from "./Lab2-mock";
-import { additionalUsers } from "./Lab2-mock";
-
+import { randomUserMock } from "../data/Lab2-mock";
+import { additionalUsers } from "../data/Lab2-mock";
+import { teachers } from "../data/teachers";
 const course = [
   "Mathematics",
   "Physics",
@@ -78,8 +78,22 @@ const sortData = (user, field, sort) => {
   }
 };
 
-const searchData = (users, key, value) => {
-  return users.find((user) => user[key] === value) || "Not found";
+const searchData = (list, value) => {
+  return list.filter((t) => {
+    const name = t.name?.toLowerCase() || "";
+    const note = t.note?.toLowerCase() || "";
+    const age = t.age?.toString() || "";
+    const country = t.country?.toLowerCase() || "";
+    const discipline = t.discipline?.toLowerCase() || "";
+
+    return (
+      name.includes(value) ||
+      note.includes(value) ||
+      age.includes(value) ||
+      country.includes(value) ||
+      discipline.includes(value)
+    );
+  });
 };
 
 const percentAll = (users, cond) => {

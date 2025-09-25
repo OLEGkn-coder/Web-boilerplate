@@ -22,7 +22,13 @@ return(
    </header>
    <div className = "content">
     <div className = "top-2">
-     <button className = "img">{t.initials}</button>
+     <div className = "img">
+        {t.photo === ""? (
+             <div className = "initials" >{t.initials}</div>
+             ) : (
+             <img className = "photo-teach" src = {t.photo}></img>
+        )}
+    </div>
     </div>
     <div className = "middle">
      <p className = "name">{t.name} {t.surname}</p>

@@ -64,9 +64,23 @@ padding-left: 18px;
   height: 340px;
   background-color: transparent;
   border: 5px solid orange;
-  font-size: 30px;
+  font-size: 35px;
   }
+  .photo-teach{
+  width: 340px;
+  height: 340px;
+  }
+  .initials{
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   width: 340px;
+   height: 340px;
+   font-weight: bold;
+  }
+  
 }
+
 
 .middle{
  display: flex;
@@ -96,16 +110,19 @@ padding-left: 18px;
   }
 }
  .bottom-2{
+  position: absolute;
    display: flex;
    align-items: center;
    text-align: center;
    margin-left: 243px;
   .button-star{
+    position: relative;
   background-color: transparent;
+  top: -4.5px;
+  right: -702.5px;
   color: grey;
   border: none;
   font-size: 50px;
-  margin-bottom: 250px;
   transition: all 0.2s ease;
    }
    .button-star:hover{

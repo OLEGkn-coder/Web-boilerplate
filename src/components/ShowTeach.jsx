@@ -47,18 +47,8 @@ return(
    </div>
    <div className = "info-div">
     <p className = "info_about">
-     Lorem ipsum dolor sit amet, 
-     consectetur adipisicing elit. 
-     Ab autem consectetur culpa 
-     cumque, distinctio dolor dolore 
-     dolorem doloremque ea explicabo 
-     facilis nam nesciunt nisi pariatur 
-     perspiciatis porro quis similique 
-     temporibus veniam veritatis? A ab ad, 
-     aliquam amet consequatur cupiditate 
-     debitis deserunt doloribus dolorum earum 
-     eius eos minus nostrum odit omnis 
-     perferendis...
+     <span className = "span">About</span>
+     {t.note}
     </p>
     <a href = "#" className = "link">toggle map</a>
    </div>

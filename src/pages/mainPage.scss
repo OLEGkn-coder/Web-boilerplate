@@ -215,7 +215,19 @@ body {
       }
     }
   }
-
+  .nextUsers{
+      font-size: 20px;
+      border: 1px solid #f68258;
+      background-color: transparent;
+      color: #f68258;
+      padding: 5px 100px;
+      margin-left: 69.5px;
+      transition: all 0.3s ease;
+  }
+  .nextUsers:hover{
+    background-color: #f68258;
+    color: white;
+  }
   .info-grid,
   .favorite-grid {
     display: grid;
@@ -224,6 +236,12 @@ body {
     gap: 20px;
     margin: 40px auto;
     max-width: 90%;
+    .gridUsers{
+      display: flex;
+      flex-direction: column;
+ 
+    }
+  
 
     .img {
       font-size: 20px;
@@ -293,7 +311,9 @@ body {
       }
     }
 
-    .star {
+
+  }
+   .star {
       margin: 0;
       display: inline-flex;
       line-height: 1;
@@ -316,7 +336,6 @@ body {
     .star.favorite{
       color: gold;
     }
-  }
 
   .table {
     table {
@@ -402,6 +421,10 @@ body {
 
         &:hover {
           color: #32a3c4;
+        }
+        &.active{
+          color: black;
+          text-decoration: underline;
         }
       }
     }

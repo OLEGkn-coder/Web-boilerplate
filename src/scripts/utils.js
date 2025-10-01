@@ -1,6 +1,6 @@
 import { randomUserMock } from "../data/Lab2-mock";
 import { additionalUsers } from "../data/Lab2-mock";
-import { teachers } from "../data/teachers";
+
 const course = [
   "Mathematics",
   "Physics",
@@ -16,7 +16,8 @@ const course = [
   "Statistics",
 ];
 
-const randomCourse = () => course[Math.floor(Math.random() * course.length)];
+export const randomCourse = () =>
+  course[Math.floor(Math.random() * course.length)];
 
 const randomColor = () =>
   `#${Math.floor(Math.random() * 16777215)

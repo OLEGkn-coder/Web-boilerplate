@@ -1,45 +1,106 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./mainPage.scss";
-import {rightRandomUser ,rightAdditionalUser ,all, validate, filterUser, sortData, searchData, percentAll} from "../scripts/utils";
-import { randomUserMock } from "../data/Lab2-mock";
-import { useState } from "react";
+import { searchData, randomCourse, validate } from "../scripts/utils";
 import PopUp2 from "../components/ShowTeach";
 import PopUp from "../components/AddTeach";
-import { teachers } from "../data/teachers";
-import { statistics } from "../data/statistics";
 
 function MainPage() {
-  console.log("1", searchData(teachers, "name", "Ihor"))
-  console.log("2 ",percentAll(statistics, (s) => s.gender === "Female") + "%");
-  console.log("3" ,filterUser(statistics, {age: 32}));
-  console.log("4", rightRandomUser);
-  console.log("5" , rightAdditionalUser);
-  console.log("6" , all);
-  console.log("7" , validate( randomUserMock));
+  const ages = ["All" ,18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100];
+  const country = ["None" ,"UK", "Ukraine", "India", "Denmark", "Belgium", "Poland", "Iceland", "China"];
 
-  const ages = [18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100];
-  const country = ["UK", "Ukraine", "India", "Denmark", "Belgium", "Poland", "Iceland", "China"];
+  const [ users, setUsers ] = useState([]);  //Нові вчителі з api запиту
+  const [ displayedUsers, setDisplayedUsers ] = useState([]);  //Ті що зараз відображаються
+  const [ loading, setLoading ] = useState(true); //Чи завантажені
+  const [ page, setPage ] = useState(1); //Сторінка 
+  const [ tableUsers, setTableUsers ] = useState(1); //Вчителі з таблиці статистики
+  const rowsTable = 10; // Кількість вчителів в табличці та замовченням
 
-  const [ teachersList, setTeachersList ] = React.useState(teachers)
-  const [ selectedTeacher, setSelectedTeacher ] = React.useState(null);
+  const [ teachersList, setTeachersList ] = React.useState([]); //Всі вчителі
+  const [ selectedTeacher, setSelectedTeacher ] = React.useState(null); //Вибраний вчитель для пошуку
 
-  const [ addPopUpOpen, setAddPopUpOpen ] = useState(false);
+  const [ addPopUpOpen, setAddPopUpOpen ] = useState(false); //Відкриття popup
 
-  const [ searchTeach, setSearchTeach ] = React.useState(teachers);
-  const [ selectedTeach, setSelectedTeach ] = React.useState("");
-  const [ teachersLi, setTeachersLi ] = React.useState(teachers);
+  const [ searchTeach, setSearchTeach ] = React.useState([]); //Пошуй вчителя(key, value)
+  const [ selectedTeach, setSelectedTeach ] = React.useState(""); //Вибраний вчитель
+  const [ teachersLi, setTeachersLi ] = React.useState([]); //Всі вчителі
 
-  const [ onlyFavorites, setOnlyFavorites ] = React.useState(false);
-  const [ withPhoto, setWithPhoto ] = React.useState(false);
+  const [ onlyFavorites, setOnlyFavorites ] = React.useState(false); //Відображати лишн favorite
+  const [ withPhoto, setWithPhoto ] = React.useState(false); //Відображати лише з фото
 
-  const[ sortTable, setSortTable ] = React.useState(statistics);
-  const[ sortConfig, setSortConfig ] = React.useState({key: null, diraction: "asc"});
+  const[ sortTable, setSortTable ] = React.useState([]); // Сорутвання таблички
+  const[ sortConfig, setSortConfig ] = React.useState({key: null, diraction: "asc"}); // Яку колонку ми сортуємо
 
-  const [ sortByCountry, setSortByCountry ] = React.useState("");
-  const [ selectedAge, setSelectedAge ] = React.useState("");
-  const [ selectedGender, setSelectedGender ] = React.useState("");
+  const [ sortByCountry, setSortByCountry ] = React.useState(""); //Сортування за країною
+  const [ selectedAge, setSelectedAge ] = React.useState(""); //Сортувати зо віком
+  const [ selectedGender, setSelectedGender ] = React.useState(""); //Сортувати за гендером
 
-  const favoriteTeachers = teachers.filter((t) => t.favorite);
+  
+  useEffect(() => {
+    fetch("https://randomuser.me/api/?results=50")
+    .then((res) => res.json())
+    .then((data) => {
+      const normalizedData = data.results.map((u, i) =>({
+        id: u.login?.uuid || i,
+        name: u.name.first,
+        surname: u.name.last,
+        age: u.dob.age,
+        gender: u.gender,
+        country: u.location.country,
+        discipline: randomCourse(),
+        note: "",
+        photo: u.picture.medium,
+        favorite: false,
+        email: u.email,
+
+      }));
+      setUsers(normalizedData);
+      setDisplayedUsers(normalizedData);
+      setLoading(false);
+      setTeachersLi(normalizedData);
+      setTeachersList(normalizedData);
+      setSearchTeach(normalizedData);
+      setSortTable(normalizedData);
+    });
+  }, []);
+
+  const loadMoreUsers = () => {
+    const nextPage = page + 1;
+    fetch(`https://randomuser.me/api/?results=10&page=${nextPage}`)
+    .then((res) => res.json())
+    .then((data) => {
+       const newUsers = data.results.map((u, i) =>({
+        id: u.login?.uuid || i,
+        name: u.name.first,
+        surname: u.name.last,
+        age: u.dob.age,
+        gender: u.gender,
+        country: u.location.country,
+        discipline: randomCourse(),
+        note: "",
+        photo: u.picture.medium,
+        favorite: false,
+        email: u.email,
+
+      }));
+      setUsers((prev) => [...prev, ...newUsers]);
+      setSearchTeach((prev) => [...prev, ...newUsers]);
+      setPage(nextPage);
+    })
+  }
+
+  const submit = async ( user ) => {
+    if(!validate(user)) return alert("Error");
+
+    await fetch("http://localhost:3001/users", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(user),
+    });
+    alert("Teacher added succsessfully");
+  }
+  const favoriteTeachers = users.filter((t) => t.favorite);
 
   const toggleFavorite = (index) => {
     const newTeachers = [...teachersList];
@@ -47,15 +108,54 @@ function MainPage() {
     setTeachersList(newTeachers);
   }
 
-  const handleAddTeacher = (newTeachers) => {
-    const teacherWithId = {
-    ...newTeachers,
-    favorite: false,
-    };
-    setTeachersList([...teachersList, teacherWithId])
+  const handleAddTeacher = async (newTeachers) => {
+   await submit(newTeachers);
+   setTeachersList((prev) => [...prev, { ...newTeachers, favorite: false}])
+   setTeachersLi((prev) => [...prev, { ...newTeachers, favorite: false}])
+   setSearchTeach((prev) => [...prev, { ...newTeachers, favorite: false}])
+   setSortTable((prev) => [...prev, { ...newTeachers, favorite: false}])
   };
 
-  const renderTeacherGrid = (list) =>
+const search = () => {
+  setSearchTeach(searchData(teachersLi, selectedTeach.toLowerCase()));
+  }     
+const sortWithPhoto = (list) => {
+  return list.filter((t) => t.photo !== "");
+}
+const sortWithFavoritr = (list) => {
+  return list.filter((t) => t.favorite);
+}
+
+const sorting = (key) => {
+  let diraction = "asc";
+  if(sortConfig.key === key && sortConfig.diraction === "asc"){
+    diraction = "desc";
+  }
+
+  const startUser = (tableUsers - 1) * rowsTable;
+  const endUsers = startUser + rowsTable;
+
+
+  const sorted = [...sortTable.slice(startUser, endUsers)].sort((a, b) => {
+    if(a[key] < b[key]){
+      return diraction === "asc" ? -1 : 1;
+    }
+    if(a[key] >  b[key]){
+      return diraction === "asc" ? 1: -1;
+    }
+    return 0;
+  })
+
+  const updateSort = [
+    ...sortTable.slice(0, startUser),
+    ...sorted,
+    ...sortTable.slice(endUsers)
+  ]
+setSortTable(updateSort);
+setSortConfig({key, diraction});
+}
+
+const renderTeacherGrid = (list) =>
     list.map((t, index) => (
       <div className="grid" key={index} onClick={() => setSelectedTeacher(t)}>
         <div className="img">
@@ -88,45 +188,19 @@ function MainPage() {
     </div>
   ));
 
-  const renderTableRows = () =>
-    sortTable.map((s, idx) => (
+  const renderTableRows = () => {
+    const startUser = (tableUsers - 1) * rowsTable;
+    const endUsers = startUser + rowsTable;
+    return sortTable.slice(startUser, endUsers).map((s, idx) => (
       <tr key={idx} >
         <td>{s.name}</td>
-        <td>{s.speciality}</td>
+        <td>{s.discipline}</td>
         <td>{s.age}</td>
         <td>{s.gender}</td>
-        <td>{s.nationality}</td>
+        <td>{s.country}</td>
       </tr>
   ));
-   
-
-const search = () => {
-  setSearchTeach(searchData(teachersLi, selectedTeach.toLowerCase()));
-  }     
-const sortWithPhoto = (list) => {
-  return list.filter((t) => t.photo !== "");
-}
-const sortWithFavoritr = (list) => {
-  return list.filter((t) => t.favorite);
-}
-
-const sorting = (key) => {
-  let diraction = "asc";
-  if(sortConfig.key === key && sortConfig.diraction === "asc"){
-    diraction = "desc";
-  }
-  const sorted = [...sortTable].sort((a, b) => {
-    if(a[key] < b[key]){
-      return diraction === "asc" ? -1 : 1;
-    }
-    if(a[key] >  b[key]){
-      return diraction === "asc" ? 1: -1;
-    }
-    return 0;
-  })
-setSortTable(sorted);
-setSortConfig({key, diraction});
-}
+};
 
 return (
      <>
@@ -164,8 +238,11 @@ return (
           <select onChange={(e) => {
             const value = Number(e.target.value);
             setSelectedAge(value);
+            if(e.target.value === "All"){
+              setSearchTeach(teachersLi);
+            } else {
             setSearchTeach(teachersLi.filter((t) => t.age === value));
-          }}>
+          }}}>
             {ages.map(age => (
               <option key = {age} value = {age}>{age}</option>
             ))}
@@ -176,8 +253,11 @@ return (
           <select onChange = {(e) => { 
             const value = e.target.value;
             setSortByCountry(value);
+            if(value === "None"){
+              setSearchTeach(teachersLi);
+            } else {
             setSearchTeach(teachersLi.filter((t) => t.country === value));
-          }}>
+          }}}>
           {country.map(country => (
             <option key = {country} value={country}>{country}</option>
           ))}
@@ -187,10 +267,15 @@ return (
         <p>Sex</p>
           <select 
           onChange={(e) => {
-            const value = e.target.value;
+            const value = e.target.value.toLowerCase();
             setSelectedGender(value);
+            if(value === "none"){
+              setSearchTeach(teachersLi);
+            } else {
             setSearchTeach(teachersLi.filter((t) => t.gender === value));
+            }
           }}>
+            <option>None</option>
             <option>Male</option>
             <option>Female</option>
             </select>
@@ -225,8 +310,9 @@ return (
       <p className = "only">Only favorites</p>
       </div>
     </div>
-    <div className="info-grid">
-      {renderTeacherGrid(searchTeach)}
+    <div className="gridUsers">
+      <div className = "info-grid">{renderTeacherGrid(searchTeach)}</div>
+      <button className = "nextUsers" onClick={loadMoreUsers}>Next</button>
     </div>
     <div className="line"><p>Statistics</p></div>
       <div className="table">
@@ -234,20 +320,24 @@ return (
           <thead>
             <tr>
               <th>Name {sortConfig.key === "name"} <button className = "sort" onClick={() => sorting("name")}>{sortConfig.diraction === "asc" ? "↑" : "↓"}</button> </th>
-              <th>Speciality{sortConfig.key === "speciality"} <button className = "sort" onClick={() => sorting("speciality")}>{sortConfig.diraction === "asc" ? "↑" : "↓"}</button> </th>
+              <th>Discipline {sortConfig.key === "discipline"} <button className = "sort" onClick={() => sorting("discipline")}>{sortConfig.diraction === "asc" ? "↑" : "↓"}</button> </th>
               <th>Age {sortConfig.key === "age"} <button className = "sort" onClick={() => sorting("age")}>{sortConfig.diraction === "asc" ? "↑" : "↓"}</button> </th>
               <th>Gender {sortConfig.key === "gender"} <button className = "sort" onClick={() => sorting("gender")}>{sortConfig.diraction === "asc" ? "↑" : "↓"}</button> </th>
-              <th>Nationality {sortConfig === "nationality"} <button className = "sort" onClick={() => sorting("nationality")}>{sortConfig.diraction === "asc" ? "↑" : "↓"}</button> </th>
+              <th>Country {sortConfig === "country"} <button className = "sort" onClick={() => sorting("country")}>{sortConfig.diraction === "asc" ? "↑" : "↓"}</button> </th>
             </tr>
           </thead>
          <tbody>{renderTableRows()}</tbody>
         </table>
         <div className="two">
-          <button className="first">1</button>
-          <button>2</button>
-          <button>3</button>
-          <button className="dot">...</button>
-          <button>Last</button>
+          {Array.from({ length: page}, (_, i) => (
+            <button
+              key={i}
+              onClick={() => setTableUsers(i + 1)}
+              className = {tableUsers === i + 1 ? "active" : ""}
+            >
+             {i + 1}
+            </button>
+          ))}
         </div>
       </div>
       <div className="line-two">
@@ -279,7 +369,7 @@ return (
     </div>
     <PopUp2 t={selectedTeacher} onClose={() => setSelectedTeacher(null)}/>
     {addPopUpOpen && 
-    <PopUp onClose={() => setAddPopUpOpen(false)} AddTeacher={handleAddTeacher}/>}
+    <PopUp onClose={() => setAddPopUpOpen(false)} AddTeacher={handleAddTeacher} />}
    </>
   );
 }

@@ -13,7 +13,7 @@ function PopUp({onClose, AddTeacher}){
     note: "",
     city: "",
     date: "",
-    color: ""
+    color: "#000000"
 
   })
   const change = (e) => {
@@ -22,8 +22,8 @@ function PopUp({onClose, AddTeacher}){
     )
   }
 
-  const submit = () => {
-   AddTeacher(formData);
+  const submit = async () => {
+   await AddTeacher(formData);
    setFormData({
     name: "",
     surname: "",
@@ -36,10 +36,10 @@ function PopUp({onClose, AddTeacher}){
     note: "",
     city: "",
     date: "",
-    color: ""
+    color: "#000000"
    });
    onClose();
-   alert("Teacher added succsessfully");
+
   }
 return(
   <div className = "popup-overlay" onClick={onClose}>
@@ -54,7 +54,7 @@ return(
       Name
      </p>
       <input className = "name-field" type = "text" placeholder='Enter name' name = "name"value={formData.name} onChange={change}></input>
-       <label for = "speciality" className="speciality-text" >Speciality</label>
+       <label htmlFor = "speciality" className="speciality-text" >Speciality</label>
         <select id = "speciality" className="speciality" name = "discipline" value={formData.discipline} onChange={change}>
          <option value = "">-- Choose --</option>
          <option value = "math">Mathematics</option>

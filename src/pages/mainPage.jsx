@@ -1,8 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef} from "react";
 import "./mainPage.scss";
 import { searchData, randomCourse, validate } from "../scripts/utils";
 import PopUp2 from "../components/ShowTeach";
 import PopUp from "../components/AddTeach";
+import StatisticsChart from "../components/StatisticsChart";
+import WebDataRocks from "@webdatarocks/webdatarocks";
+import WebDataRocksReact from "@webdatarocks/react-webdatarocks";
+import "@webdatarocks/webdatarocks/webdatarocks.css";
+import _ from "lodash";
 
 function MainPage() {
   const ages = ["All" ,18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100];
@@ -14,6 +19,9 @@ function MainPage() {
   const [ page, setPage ] = useState(1); //Сторінка 
   const [ tableUsers, setTableUsers ] = useState(1); //Вчителі з таблиці статистики
   const rowsTable = 10; // Кількість вчителів в табличці та замовченням
+  const [showChart, setShowChart] = useState(false); //Діаграма
+  const [ showReport, setShowReport ] = useState(false); //Звіт
+  const pivotRef = useRef(null);
 
   const [ teachersList, setTeachersList ] = React.useState([]); //Всі вчителі
   const [ selectedTeacher, setSelectedTeacher ] = React.useState(null); //Вибраний вчитель для пошуку
@@ -39,20 +47,28 @@ function MainPage() {
     fetch("https://randomuser.me/api/?results=50")
     .then((res) => res.json())
     .then((data) => {
-      const normalizedData = data.results.map((u, i) =>({
-        id: u.login?.uuid || i,
-        name: u.name.first,
-        surname: u.name.last,
-        age: u.dob.age,
-        gender: u.gender,
-        country: u.location.country,
-        discipline: randomCourse(),
-        note: "",
-        photo: u.picture.medium,
-        favorite: false,
-        email: u.email,
+     const normalizedData = _.map(data.results, (u, i) => ({
+      id: _.get(u, "login.uuid", i),
+      name: _.get(u, "name.first", ""),
+      surname: _.get(u, "name.last", ""),
+      phone: _.get(u, "phone", ""),
+      age: _.get(u, "dob.age", 0),
+      gender: (_.get(u, "gender", "unknown")),
+      country: _.get(u, "location.country", "Unknown"),
+      discipline: randomCourse(),
+      note: "",
+      photo: _.get(u, "picture.medium", ""),
+      favorite: false,
+      dob: _.get(u, "dob", {}),
+      email: _.get(u, "email", ""),
+      location: {
+   coordinates: {
+      latitude: _.get(u, "location.coordinates.latitude", null),
+      longitude: _.get(u, "location.coordinates.longitude", null),
+    },
+  },
+}));
 
-      }));
       setUsers(normalizedData);
       setDisplayedUsers(normalizedData);
       setLoading(false);
@@ -62,6 +78,27 @@ function MainPage() {
       setSortTable(normalizedData);
     });
   }, []);
+
+
+  useEffect(() => {
+    if(showReport && pivotRef.current) {
+      const pivot = new WebDataRocks({
+        container: pivotRef.current,
+        toolbar: true,
+        report: {
+        dataSource: { data: teachersLi },
+        slice: {
+          rows: [{ uniqueName: "country" }],
+          columns: [{ uniqueName: "discipline" }],
+          measures: [{ uniqueName: "age", aggregation: "average" }],
+        },
+        options: {
+          grid: { type: "flat" },
+        },
+      },
+      });
+      return () => pivotRef.current && (pivotRef.current.innerHTML = "");
+  }}, [ showReport, teachersLi])
 
   const loadMoreUsers = () => {
     const nextPage = page + 1;
@@ -88,18 +125,32 @@ function MainPage() {
     })
   }
 
-  const submit = async ( user ) => {
-    if(!validate(user)) return alert("Error");
+  const submitTeacher = async (user) => {
+  try {
+    if (!validate(user)) {
+      alert("Validation error");
+      return;
+    }
 
-    await fetch("http://localhost:3001/users", {
+    const res = await fetch("http://localhost:3001/users", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(user),
     });
-    alert("Teacher added succsessfully");
+
+    if (!res.ok) {
+      throw new Error(`Server error: ${res.status}`);
+    }
+
+    const data = await res.json();
+    console.log("Added teacher:", data);
+
+    alert("Teacher added successfully ✅");
+  } catch (err) {
+    console.error("❌ Error while adding teacher:", err);
+    alert("Error while adding teacher, check console");
   }
+};
   const favoriteTeachers = users.filter((t) => t.favorite);
 
   const toggleFavorite = (index) => {
@@ -108,23 +159,20 @@ function MainPage() {
     setTeachersList(newTeachers);
   }
 
-  const handleAddTeacher = async (newTeachers) => {
-   await submit(newTeachers);
-   setTeachersList((prev) => [...prev, { ...newTeachers, favorite: false}])
-   setTeachersLi((prev) => [...prev, { ...newTeachers, favorite: false}])
-   setSearchTeach((prev) => [...prev, { ...newTeachers, favorite: false}])
-   setSortTable((prev) => [...prev, { ...newTeachers, favorite: false}])
-  };
+ const handleAddTeacher = async (newTeacher) => {
+  await submitTeacher(newTeacher);
+
+  setTeachersList((prev) => [...prev, { ...newTeacher, favorite: false }]);
+  setTeachersLi((prev) => [...prev, { ...newTeacher, favorite: false }]);
+  setSearchTeach((prev) => [...prev, { ...newTeacher, favorite: false }]);
+  setSortTable((prev) => [...prev, { ...newTeacher, favorite: false }]);
+};
 
 const search = () => {
   setSearchTeach(searchData(teachersLi, selectedTeach.toLowerCase()));
   }     
-const sortWithPhoto = (list) => {
-  return list.filter((t) => t.photo !== "");
-}
-const sortWithFavoritr = (list) => {
-  return list.filter((t) => t.favorite);
-}
+const sortWithPhoto = (list) => _.filter(list, (t) => !_.isEmpty(t.photo));
+const sortWithFavoritr = (list) => _.filter(list, "favorite");
 
 const sorting = (key) => {
   let diraction = "asc";
@@ -135,16 +183,9 @@ const sorting = (key) => {
   const startUser = (tableUsers - 1) * rowsTable;
   const endUsers = startUser + rowsTable;
 
+const sorted = _.orderBy(sortTable, [key], [sortConfig.diraction]);
+setSortTable(sorted);
 
-  const sorted = [...sortTable.slice(startUser, endUsers)].sort((a, b) => {
-    if(a[key] < b[key]){
-      return diraction === "asc" ? -1 : 1;
-    }
-    if(a[key] >  b[key]){
-      return diraction === "asc" ? 1: -1;
-    }
-    return 0;
-  })
 
   const updateSort = [
     ...sortTable.slice(0, startUser),
@@ -315,31 +356,160 @@ return (
       <button className = "nextUsers" onClick={loadMoreUsers}>Next</button>
     </div>
     <div className="line"><p>Statistics</p></div>
-      <div className="table">
-        <table>
-          <thead>
-            <tr>
-              <th>Name {sortConfig.key === "name"} <button className = "sort" onClick={() => sorting("name")}>{sortConfig.diraction === "asc" ? "↑" : "↓"}</button> </th>
-              <th>Discipline {sortConfig.key === "discipline"} <button className = "sort" onClick={() => sorting("discipline")}>{sortConfig.diraction === "asc" ? "↑" : "↓"}</button> </th>
-              <th>Age {sortConfig.key === "age"} <button className = "sort" onClick={() => sorting("age")}>{sortConfig.diraction === "asc" ? "↑" : "↓"}</button> </th>
-              <th>Gender {sortConfig.key === "gender"} <button className = "sort" onClick={() => sorting("gender")}>{sortConfig.diraction === "asc" ? "↑" : "↓"}</button> </th>
-              <th>Country {sortConfig === "country"} <button className = "sort" onClick={() => sorting("country")}>{sortConfig.diraction === "asc" ? "↑" : "↓"}</button> </th>
-            </tr>
-          </thead>
-         <tbody>{renderTableRows()}</tbody>
-        </table>
-        <div className="two">
-          {Array.from({ length: page}, (_, i) => (
-            <button
-              key={i}
-              onClick={() => setTableUsers(i + 1)}
-              className = {tableUsers === i + 1 ? "active" : ""}
-            >
-             {i + 1}
-            </button>
-          ))}
-        </div>
+     <div className="table">
+  <div className="stat-buttons" style={{ textAlign: "center", marginBottom: "10px" }}>
+    <button
+      onClick={() => {setShowChart(false); setShowReport(false)}}
+      style={{
+      background: 
+      !showChart && !showReport ? "#f68258" : "transparent",
+      border: `2px solid #f68258`,
+      color:  !showChart && !showReport ? "white" : "#f68258",
+      padding: "6px 12px",
+      borderRadius: "6px",
+      cursor: "pointer",
+      fontWeight: "bold",
+      transition: "0.25s ease",
+      }}
+    >
+      Table
+    </button>
+    <button
+      onClick={() => {setShowChart(true); setShowReport(false)}}
+      style={{
+      background: showChart ? "#f68258" : "transparent",
+      border: `2px solid #f68258`,
+      color:  showChart ? "white" : "#f68258",
+      padding: "6px 12px",
+      borderRadius: "6px",
+      cursor: "pointer",
+      fontWeight: "bold",
+      transition: "0.25s ease",
+      marginLeft: "106px",
+      }}
+    >
+      Diagram
+    </button>
+    <button
+    onClick= {() => {setShowChart(false); setShowReport(true)}}
+    style={{
+      background: showReport ? "#f68258" : "transparent",
+      border: `2px solid #f68258`,
+      color:  showReport ? "white" : "#f68258",
+      padding: "6px 12px",
+      borderRadius: "6px",
+      cursor: "pointer",
+      fontWeight: "bold",
+      transition: "0.25s ease",
+      marginLeft: "106px",
+    }}
+    >
+      Report
+    </button>
+  </div>
+
+  {showReport ? (
+<div className = "report-cont">
+<div
+    ref={pivotRef}
+    className = "pivot-cont"
+  ></div>
+  </div>
+  ) : !showChart? (
+    <>
+      <table>
+        <thead>
+  <tr>
+    <th>
+      Name
+      <button
+        className="sort"
+        onClick={() => sorting("name")}
+      >
+        {sortConfig.key === "name"
+          ? sortConfig.diraction === "asc"
+            ? "↑"
+            : "↓"
+          : "↕"}
+      </button>
+    </th>
+
+    <th>
+      Discipline
+      <button
+        className="sort"
+        onClick={() => sorting("discipline")}
+      >
+        {sortConfig.key === "discipline"
+          ? sortConfig.diraction === "asc"
+            ? "↑"
+            : "↓"
+          : "↕"}
+      </button>
+    </th>
+
+    <th>
+      Age
+      <button
+        className="sort"
+        onClick={() => sorting("age")}
+      >
+        {sortConfig.key === "age"
+          ? sortConfig.diraction === "asc"
+            ? "↑"
+            : "↓"
+          : "↕"}
+      </button>
+    </th>
+
+    <th>
+      Gender
+      <button
+        className="sort"
+        onClick={() => sorting("gender")}
+      >
+        {sortConfig.key === "gender"
+          ? sortConfig.diraction === "asc"
+            ? "↑"
+            : "↓"
+          : "↕"}
+      </button>
+    </th>
+
+    <th>
+      Country
+      <button
+        className="sort"
+        onClick={() => sorting("country")}
+      >
+        {sortConfig.key === "country"
+          ? sortConfig.diraction === "asc"
+            ? "↑"
+            : "↓"
+          : "↕"}
+      </button>
+    </th>
+  </tr>
+</thead>
+
+        <tbody>{renderTableRows()}</tbody>
+      </table>
+      <div className="two">
+        {Array.from({ length: page }, (_, i) => (
+          <button
+            key={i}
+            onClick={() => setTableUsers(i + 1)}
+            className={tableUsers === i + 1 ? "active" : ""}
+          >
+            {i + 1}
+          </button>
+        ))}
       </div>
+    </>
+  ) : (
+    <StatisticsChart data={teachersLi} />
+  )}
+</div>
       <div className="line-two">
         <p>Favorites</p>
       </div>

@@ -46,23 +46,22 @@ const all = [...rightRandomUser, ...rightAdditionalUser].filter(
   (user, index, self) => index === self.findIndex((t) => t.email === user.email)
 );
 
-const fields = ["full_name", "gender", "note", "state", "city", "country"];
+import _ from "lodash";
 
-const validate = (user) => {
-  const textValide = fields.every(
-    (field) =>
-      typeof user[field] === "string" &&
-      user[field][0] === user[field][0].toUpperCase()
-  );
+export const validate = (user) => {
+  if (!_.isObject(user)) return false;
 
-  const ageValide = typeof user.age === "number";
+  const stringFields = ["name", "surname", "discipline", "country"];
+  const allStringsValid = _.every(stringFields, (field) => {
+    const value = _.get(user, field, "");
+    return (
+      _.isString(value) && !_.isEmpty(value) && _.upperFirst(value) === value
+    );
+  });
 
-  const emailValide =
-    typeof user.email === "string" && user.email.includes("@");
+  const ageValid = _.inRange(_.get(user, "age", 0), 18, 100);
 
-  const phoneValide = typeof user.phone === "string";
-
-  return textValide && ageValide && emailValide && phoneValide;
+  return allStringsValid && ageValid;
 };
 
 const filterUser = (users, filtrParam) => {
@@ -106,7 +105,6 @@ export {
   rightRandomUser,
   rightAdditionalUser,
   all,
-  validate,
   filterUser,
   sortData,
   searchData,
